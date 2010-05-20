@@ -1,23 +1,27 @@
-%table{:border => 1}
-	%tr
-		%tr
-		%td time
-		%td title
-		%td channel
-	- @recordings.each do |ra|
-		- channel = ra.chanid
-		- title = ra.title
-		- nice_time = Time.at(ra.startts.to_i)
-		- rec_time = Time.at(ra.recstartts.to_i)
-		- year = rec_time.year
-		- month = rec_time.month.to_s.rjust(2,'0')
-		- day = rec_time.day.to_s.rjust(2,'0')
-		- hour = rec_time.hour.to_s.rjust(2,'0')
-		- minute = rec_time.min.to_s.rjust(2,'0')
-		- rec_time_string = [ year, month, day, hour, minute ].join
-		%tr
-			%td= nice_time
-			%td
-				%a{:href => [ channel, rec_time_string ].join("/") }
-					= title
-			%td= channel
+%html
+	%head
+		%title Recordings List
+
+	%body
+		
+		%table{:border => 1}
+			%tr
+				%tr
+					%td time
+					%td title
+					%td channel
+			- @recordings.each do |rec|
+				- nice_time = Time.at(rec.startts.to_i)
+				- rec_time = Time.at(rec.recstartts.to_i)
+				- year = rec_time.year
+				- month = rec_time.month.to_s.rjust(2,'0')
+				- day = rec_time.day.to_s.rjust(2,'0')
+				- hour = rec_time.hour.to_s.rjust(2,'0')
+				- minute = rec_time.min.to_s.rjust(2,'0')
+				- rec_time_string = [ year, month, day, hour, minute ].join
+				%tr
+					%td= nice_time
+					%td
+						%a{:href => [ rec.chanid, rec_time_string ].join("/") }
+							= rec.title
+					%td= rec.channame
